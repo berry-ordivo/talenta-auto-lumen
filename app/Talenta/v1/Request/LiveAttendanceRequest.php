@@ -47,6 +47,19 @@ class LiveAttendanceRequest extends AbstractRequest
         'sunday'
     ];
 
+    /** @var array $offDay */
+    protected static array $holidays = [
+        '01-05-2024',
+		'09-05-2024',
+		'23-05-2024',
+		'01-06-2024',
+		'17-06-2024',
+		'07-07-2024',
+		'17-08-2024',
+		'16-09-2024',
+		'25-12-2024'
+    ];
+
     /**
      * @param array $config
      */
@@ -72,7 +85,6 @@ class LiveAttendanceRequest extends AbstractRequest
     public function clockIn(): array
     {
         $this->data['event_type'] = self::$eventTypeClockIn;
-
         if (!$this->isOffDay()) {
             return $this->executorCaller();
         }
@@ -177,13 +189,16 @@ class LiveAttendanceRequest extends AbstractRequest
     public function isOffDay(): bool
     {
         $offDays = env('TALENTA_OFF_DAY', self::$offDay);
+        $holidays = self::$holidays;
         $explode = explode(',', $offDays);
 
         array_walk($explode, function(&$value) {
             $value = strtoupper($value);
         });
+        $weekend = in_array(strtoupper($this->currentDate->format('l')), $explode);
+        $dayOff = in_array($this->currentDate->timezone('Asia/Jakarta')->format('d-m-Y'), $holidays);
 
-        return in_array(strtoupper($this->currentDate->format('l')), $explode);
+        return $dayOff || $weekend;
     }
 
     /**
