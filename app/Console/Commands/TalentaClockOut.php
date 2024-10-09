@@ -57,6 +57,7 @@ class TalentaClockOut extends Command
         }
 
         $this->info(__('LOGIN_SUCCESS'));
+        // $this->info("$auth->sessionToken");
 
         $liveAttendance = new LiveAttendanceRequest();
         $liveAttendance->setSessionToken($auth->sessionToken);
