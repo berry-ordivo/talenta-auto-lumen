@@ -57,6 +57,7 @@ class LiveAttendanceRequest extends AbstractRequest
 		'07-07-2024',
 		'17-08-2024',
 		'16-09-2024',
+        '27-11-2024',
         '05-12-2024',
         '06-12-2024',
         '10-12-2024',
